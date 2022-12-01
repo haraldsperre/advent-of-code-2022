@@ -1,17 +1,10 @@
 fun main() {
     fun getCollections(input: List<String>): List<Int> {
-        var curr = 0
-        val result = mutableListOf<Int>()
-        for (i in input) {
-            if (i != "") {
-                curr += i.toInt()
-            } else {
-                result.add(curr)
-                curr = 0
+        return input
+            .chunkedBy { it.isEmpty() }
+            .map { elf ->
+                elf.sumOf { it.toInt() }
             }
-        }
-        if (curr != 0) result.add(curr)
-        return result
     }
 
     fun part1(input: List<String>): Int {
