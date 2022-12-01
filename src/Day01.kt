@@ -7,15 +7,11 @@ fun main() {
             }
     }
 
-    fun part1(input: List<String>): Int {
-        return getCollections(input).maxOrNull() ?: 0
-    }
+    fun part1(input: List<String>): Int =
+         getCollections(input).maxOrNull() ?: 0
 
-    fun part2(input: List<String>): Int {
-        val caloriesCarried = getCollections(input)
-
-        return caloriesCarried.sortedDescending().subList(0, 3).sum()
-    }
+    fun part2(input: List<String>): Int =
+        getCollections(input).sortedDescending().take(3).sum()
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
