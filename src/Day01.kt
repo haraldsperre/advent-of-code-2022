@@ -1,37 +1,27 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        var max = 0
+    fun getCollections(input: List<String>): List<Int> {
         var curr = 0
-
-        for (foodItem in input) {
-            if (foodItem == "") {
-                if (curr > max) {
-                    max = curr
-                }
-                curr = 0
+        val result = mutableListOf<Int>()
+        for (i in input) {
+            if (i != "") {
+                curr += i.toInt()
             } else {
-                curr += foodItem.toInt()
+                result.add(curr)
+                curr = 0
             }
         }
-        return max
+        if (curr != 0) result.add(curr)
+        return result
+    }
+
+    fun part1(input: List<String>): Int {
+        return getCollections(input).maxOrNull() ?: 0
     }
 
     fun part2(input: List<String>): Int {
-        val caloriesCarried: MutableList<Int> = mutableListOf()
-        var curr = 0
+        val caloriesCarried = getCollections(input)
 
-        for (foodItem in input) {
-            if (foodItem == "") {
-                caloriesCarried.add(curr)
-                curr = 0
-            } else {
-                curr += foodItem.toInt()
-            }
-        }
-        if (curr != 0) caloriesCarried.add(curr)
-        caloriesCarried.sortDescending()
-
-        return caloriesCarried.subList(0, 3).sum()
+        return caloriesCarried.sortedDescending().subList(0, 3).sum()
     }
 
     // test if implementation meets criteria from the description, like:
