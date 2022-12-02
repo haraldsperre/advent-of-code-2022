@@ -8,7 +8,7 @@ fun main() {
     }
 
     fun part1(input: List<String>): Int =
-         getCollections(input).maxOrNull() ?: 0
+        getCollections(input).maxOrNull() ?: 0
 
     fun part2(input: List<String>): Int =
         getCollections(input).sortedDescending().take(3).sum()
