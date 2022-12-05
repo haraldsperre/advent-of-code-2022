@@ -1,5 +1,19 @@
+typealias CrateStack = ArrayDeque<Char>
+
+fun CrateStack.pop(): Char = removeLast()
+fun CrateStack.pop(count: Int): CrateStack {
+    val a = CrateStack()
+    repeat(count) { a.addFirst(pop()) }
+    return a
+}
+
+fun CrateStack.push(crate: Char) = addLast(crate)
+fun CrateStack.push(crates: CrateStack) {
+    while (crates.isNotEmpty()) push(crates.removeFirst())
+}
+
 fun main() {
-    fun createStacks(stackVisualization: List<String>): List<ArrayDeque<Char>> {
+    fun createStacks(stackVisualization: List<String>): List<CrateStack> {
         val stacks = stackVisualization
             .last()
             .chunked(4)
@@ -10,7 +24,7 @@ fun main() {
                 .replace("    ", " ")
                 .split(" ")
                 .forEachIndexed { index, card ->
-                    if (card.isNotEmpty()) stacks.get(index = index).add(card[1])
+                    if (card.isNotEmpty()) stacks.get(index = index).push(card[1])
                 }
         }
         return stacks
@@ -27,10 +41,12 @@ fun main() {
         val stacks = createStacks(stackDescription)
         for (instruction in instructions) {
             val (number, from, to) = getInstruction(instruction)
-            repeat(number) { stacks[to - 1].add(stacks[from - 1].removeLast()) }
+            repeat(number) {
+                stacks[to - 1].push(stacks[from - 1].pop())
+            }
         }
         return stacks
-            .map { it.removeLast() }
+            .map { it.pop() }
             .joinToString("")
     }
 
@@ -39,12 +55,10 @@ fun main() {
         val stacks = createStacks(stackDescription)
         for (instruction in instructions) {
             val (number, from, to) = getInstruction(instruction)
-            val moved = ArrayDeque<Char>()
-            repeat(number) { moved.addFirst(stacks[from - 1].removeLast()) }
-            repeat(number) { stacks[to - 1].add(moved.removeFirst()) }
+            stacks[to - 1].push(stacks[from - 1].pop(number))
         }
         return stacks
-            .map { it.removeLast() }
+            .map { it.pop() }
             .joinToString("")
     }
 
