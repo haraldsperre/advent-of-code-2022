@@ -26,19 +26,19 @@ fun getEntityFromLine(line: String, currentDir: Directory): FilesystemEntity {
 fun buildFilesystemTree(input: List<String>): Directory {
     val root = Directory("/")
     var currentDir = root
-    for (line in input.drop(1)) {
+    for (line in input) {
         if (line == "$ ls") {
             continue
         } else if (line.startsWith("$ cd")) {
             val name = line.removePrefix("$ cd ")
-            currentDir = if (name == "..") {
-                currentDir.parent!!
-            } else {
-                currentDir.getChild(name) as Directory
+            currentDir = when (name) {
+                ".." -> currentDir.parent ?: currentDir
+                "/" -> root
+                else -> currentDir.getChild(name) as Directory
             }
         } else {
             val entity = getEntityFromLine(line, currentDir)
-            currentDir.add(entity)
+            if (currentDir.getChild(entity.name) == null) currentDir.add(entity)
         }
     }
     return root
