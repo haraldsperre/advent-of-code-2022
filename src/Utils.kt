@@ -5,8 +5,15 @@ import java.security.MessageDigest
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = File("input", "$name.txt")
+fun readInput(name: String): List<String> = File("input", "$name.txt")
     .readLines()
+
+fun readInputAsIntLists(name: String): List<List<Int>> = readInput(name)
+    .map { row: String ->
+        List(row.length) { i ->
+            row[i].toString().toInt()
+        }
+    }
 
 /**
  * Splits list into chunks, delineated by the given predicate.
