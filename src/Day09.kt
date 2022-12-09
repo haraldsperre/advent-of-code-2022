@@ -1,10 +1,11 @@
 import kotlin.math.abs
+import kotlin.math.sign
 
 fun main() {
 
     fun moveHead(position: Pair<Int, Int>, direction: Char): Pair<Int, Int> = when (direction) {
-        'U' -> position.copy(first = position.first - 1)
-        'D' -> position.copy(first = position.first + 1)
+        'U' -> position.copy(first = position.first + 1)
+        'D' -> position.copy(first = position.first - 1)
         'L' -> position.copy(second = position.second - 1)
         'R' -> position.copy(second = position.second + 1)
         else -> throw IllegalArgumentException("Invalid direction: $direction")
@@ -15,14 +16,10 @@ fun main() {
         val verticalDistance = head.first - tail.first
         return if (abs(horizontalDistance) <= 1 && abs(verticalDistance) <= 1) {
             tail
-        } else if (abs(horizontalDistance) == 0) {
-            tail.copy(first = tail.first + verticalDistance / abs(verticalDistance))
-        } else if (abs(verticalDistance) == 0) {
-            tail.copy(second = tail.second + horizontalDistance / abs(horizontalDistance))
         } else {
             tail.copy(
-                first = tail.first + verticalDistance / abs(verticalDistance),
-                second = tail.second + horizontalDistance / abs(horizontalDistance)
+                first = tail.first + verticalDistance.sign,
+                second = tail.second + horizontalDistance.sign
             )
         }
     }
